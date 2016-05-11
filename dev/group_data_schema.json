@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-04/schema#",
-  "title": "Fluid for cubic EOS in CoolProp",
+  "title": "Schema for groups in UNIFAQ library",
   "items": {
     "properties": {
       "mgi": {
