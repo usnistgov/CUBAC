@@ -54,11 +54,11 @@ namespace UNIFAQLibrary{
     InteractionParameters UNIFAQParameterLibrary::get_interaction_parameters(int mgi1, int mgi2) {
         for (std::vector<InteractionParameters>::const_iterator it = interaction_parameters.cbegin(); it != interaction_parameters.cend(); ++it) {
             if (it->mgi1 == mgi1 && it->mgi2 == mgi2) {
-                /// Correct order, return it
+                // Correct order, return it
                 return *it;
             }
             if (it->mgi2 == mgi1 && it->mgi1 == mgi2) {
-                /// Backwards, swap the parameters
+                // Backwards, swap the parameters
                 InteractionParameters ip = *it;
                 ip.swap();
                 return ip;

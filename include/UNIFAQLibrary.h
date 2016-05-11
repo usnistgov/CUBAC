@@ -17,6 +17,7 @@ namespace UNIFAQLibrary{
             Q_k; ///< Q_k
     };
 
+    /// A structure containing the parameters for a given mgi-mgi pair
     struct InteractionParameters{
         int mgi1, ///< The first main group index
             mgi2; ///< The second main group index
@@ -39,6 +40,15 @@ namespace UNIFAQLibrary{
         std::vector<Group> groups; ///< The collection of groups forming the component from the group decomposition
     };
 
+    /**
+     * \brief A container for the parameters for a given UNIFAQ model
+     *
+     * This container is intended to be sufficiently generic to allow the user to populate it with UNIFAQ parameters from
+     * any of the standard UNIFAQ models
+     * 
+     * Input of parameters (population) is done using JSON-formatted strings, and the class can be interrogated to return
+     * the desired group information and/or interaction parameters
+     */
     struct UNIFAQParameterLibrary{
     private:
         std::vector<Group> groups; ///< The collection of groups forming the component from the group decomposition
@@ -46,13 +56,17 @@ namespace UNIFAQLibrary{
 
         /// Convert string to JSON document
         rapidjson::Document jsonize(std::string &s);
+
         /// Populate internal data structures based on rapidjson Documents
         void populate(rapidjson::Value &group_data, rapidjson::Value &interaction_data);
+
     public:
-        /// Populate internal data structures based on rapidjson Documents
+        /// Populate internal data structures based on JSON-formatted strings
         void populate(std::string &group_data, std::string &interaction_data);
+        
         /// Get the data for group with given sub group index
         Group get_group(int sgi);
+        
         /// Get the interaction parameters for given mgi-mgi pair
         InteractionParameters get_interaction_parameters(int mgi1, int mgi2);
     };
