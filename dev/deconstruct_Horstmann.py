@@ -1,6 +1,6 @@
 
 import pandas, json
-df = pandas.read_excel('../Horstmann.xlsx','Groups')
+df = pandas.read_excel('../notebooks/Horstmann.xlsx','Groups')
 groups = []
 for ind, row in df.iterrows():
     group = {'sgi': row['sub group index'],
@@ -14,7 +14,7 @@ with open('Horstmann_group_data.json','w') as fp:
     json.dump(groups, fp, indent = 1, sort_keys = True)
 
 
-df = pandas.read_excel('../Horstmann.xlsx','InteractionParameters')
+df = pandas.read_excel('../notebooks/Horstmann.xlsx','InteractionParameters')
 df = df.fillna(0.0)
 def clean(s):
     if isinstance(s, (float, int)):
