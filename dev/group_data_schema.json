@@ -1,0 +1,39 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Fluid for cubic EOS in CoolProp",
+  "items": {
+    "properties": {
+      "mgi": {
+        "description": "main group index",
+        "type": "number"
+      },
+      "main_group_name": {
+        "description": "Name of the main group (documentation only, not used)",
+        "type": "string"
+      },
+      "sgi": {
+        "description": "sub group index",
+        "type": "number"
+      },
+      "sub_group_name": {
+        "description": "Name of the sub group (documentation only, not used)",
+        "type": "string",
+      },
+      "R_k": {
+        "description": "R_k",
+        "type": "number",
+      },
+      "Q_k": {
+        "description": "Q_k",
+        "type": "number",
+      }
+    },
+    "required": [
+      "sgi",
+      "sub_group_name",
+      "mgi",
+      "main_group_name"
+    ]
+  },
+  "type": "array"
+}

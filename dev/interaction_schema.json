@@ -1,0 +1,51 @@
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "title": "Schema for interaction parameters in UNIFAQ library",
+  "items": {
+    "properties": {
+      "mgi1": {
+        "description": "main group index of first group (order matters)",
+        "type": "number"
+      },
+      "mgi2": {
+        "description": "main group index of second group (order matters)",
+        "type": "number"
+      },
+      "a_ij": {
+        "description": "Term multiplying 1/T",
+        "type": "number",
+      },
+      "a_ji": {
+        "description": "Term multiplying 1/T",
+        "type": "number",
+      },
+      "b_ij": {
+        "description": "Constant term",
+        "type": "number",
+      },
+      "b_ji": {
+        "description": "Constant term",
+        "type": "number",
+      },
+      "c_ij": {
+        "description": "Term multiplying T",
+        "type": "number",
+      },
+      "c_ji": {
+        "description": "Term multiplying T",
+        "type": "number",
+      }
+    },
+    "required": [
+      "a_ij",
+      "a_ji",
+      "b_ij",
+      "b_ji",
+      "c_ij",
+      "c_ji",
+      "mgi1",
+      "mgi2"
+    ]
+  },
+  "type": "array"
+}
