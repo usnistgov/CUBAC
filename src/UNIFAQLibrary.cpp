@@ -45,13 +45,13 @@ namespace UNIFAQLibrary{
         rapidjson::Document interaction_JSON = jsonize(interaction_data);
         populate(group_JSON, interaction_JSON);
     }
-    Group UNIFAQParameterLibrary::get_group(int sgi) {
+    Group UNIFAQParameterLibrary::get_group(int sgi) const {
         for (std::vector<Group>::const_iterator it = groups.cbegin(); it != groups.cend(); ++it) {
             if (it->sgi == sgi) { return *it; }
         }
         throw std::exception("Could not find group");
     }
-    InteractionParameters UNIFAQParameterLibrary::get_interaction_parameters(int mgi1, int mgi2) {
+    InteractionParameters UNIFAQParameterLibrary::get_interaction_parameters(int mgi1, int mgi2) const {
         for (std::vector<InteractionParameters>::const_iterator it = interaction_parameters.cbegin(); it != interaction_parameters.cend(); ++it) {
             if (it->mgi1 == mgi1 && it->mgi2 == mgi2) {
                 // Correct order, return it

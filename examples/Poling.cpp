@@ -1,5 +1,5 @@
-
 #include "UNIFAQLibrary.h"
+#include "UNIFAQ.h"
 
 #include <string>
 #include <fstream>
@@ -19,6 +19,10 @@ int main()
         int sgi = 12;
         Group g = lib.get_group(sgi);
         InteractionParameters ip = lib.get_interaction_parameters(1, 2);
+        
+        UNIFAQMixture mix(lib);
+        mix.set_interaction_parameters();
+
         int rr = 0;
     }
 }

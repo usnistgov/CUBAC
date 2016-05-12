@@ -65,10 +65,10 @@ namespace UNIFAQLibrary{
         void populate(std::string &group_data, std::string &interaction_data);
         
         /// Get the data for group with given sub group index
-        Group get_group(int sgi);
+        Group get_group(int sgi) const;
         
         /// Get the interaction parameters for given mgi-mgi pair
-        InteractionParameters get_interaction_parameters(int mgi1, int mgi2);
+        InteractionParameters get_interaction_parameters(int mgi1, int mgi2) const;
     };
 
 }; /* namespace UNIFAQLibrary*/
