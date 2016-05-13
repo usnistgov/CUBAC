@@ -21,6 +21,9 @@ int main()
         InteractionParameters ip = lib.get_interaction_parameters(1, 2);
         
         UNIFAQMixture mix(lib);
+        std::vector<std::string> names(2, "pentane"); names[1] = "acetone"; 
+        mix.set_components("name", names);
+
         mix.set_interaction_parameters();
 
         int rr = 0;

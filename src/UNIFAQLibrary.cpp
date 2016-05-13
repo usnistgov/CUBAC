@@ -52,6 +52,13 @@ namespace UNIFAQLibrary{
         throw std::exception("Could not find group");
     }
     InteractionParameters UNIFAQParameterLibrary::get_interaction_parameters(int mgi1, int mgi2) const {
+
+        // If both mgi are the same, yield all zeros for the interaction parameters
+        if (mgi1 == mgi2){
+            InteractionParameters ip; ip.mgi1 = mgi1; ip.mgi2 = mgi2;
+            ip.zero_out();
+            return ip;
+        }
         for (std::vector<InteractionParameters>::const_iterator it = interaction_parameters.cbegin(); it != interaction_parameters.cend(); ++it) {
             if (it->mgi1 == mgi1 && it->mgi2 == mgi2) {
                 // Correct order, return it

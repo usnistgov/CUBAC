@@ -33,6 +33,12 @@ namespace UNIFAQLibrary{
             std::swap(b_ij, b_ji);
             std::swap(c_ij, c_ji);
         }
+        /// Set all the values to 0
+        void zero_out() {
+            a_ij = 0; a_ji = 0;
+            b_ij = 0; b_ji = 0;
+            c_ij = 0; c_ji = 0;
+        }
     };
 
     /// A structure containing the group decomposition for a given fluid
