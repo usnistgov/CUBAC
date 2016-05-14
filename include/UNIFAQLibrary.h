@@ -41,9 +41,20 @@ namespace UNIFAQLibrary{
         }
     };
 
-    /// A structure containing the group decomposition for a given fluid
+    /// A structure containing a group (its count, index, etc.) for a subgroup forming a part of a component
+    struct ComponentGroup {
+        int count;
+        UNIFAQLibrary::Group group;
+        ComponentGroup(const int count, const UNIFAQLibrary::Group group) : count(count), group(group) {};
+    };
+
+    /// A structure containing the groups and additional information for a component
     struct Component{
-        std::vector<Group> groups; ///< The collection of groups forming the component from the group decomposition
+        std::string name,            ///< A user-readable name (not guaranteed unique)
+                    inchikey,        ///< The InChI key for the component
+                    registry_number, ///< The registry number for the component in xxxxxxxxxx-xx-x format
+                    userid;          ///< A user-specified string identifier
+        std::vector<ComponentGroup> groups;
     };
 
     /**
@@ -59,19 +70,26 @@ namespace UNIFAQLibrary{
     private:
         std::vector<Group> groups; ///< The collection of groups forming the component from the group decomposition
         std::vector<InteractionParameters> interaction_parameters; ///< The collection of interaction parameters between main groups in the library
+        std::vector<Component> components; ///< The collection of components that are included in this library
 
         /// Convert string to JSON document
         rapidjson::Document jsonize(std::string &s);
 
         /// Populate internal data structures based on rapidjson Documents
-        void populate(rapidjson::Value &group_data, rapidjson::Value &interaction_data);
+        void populate(rapidjson::Value &group_data, rapidjson::Value &interaction_data, rapidjson::Value &decomp_data);
 
     public:
         /// Populate internal data structures based on JSON-formatted strings
-        void populate(std::string &group_data, std::string &interaction_data);
+        void populate(std::string &group_data, std::string &interaction_data, std::string &decomp_data);
         
         /// Get the data for group with given sub group index
         Group get_group(int sgi) const;
+
+        /// Check if the sub group index can be retrieved
+        bool has_group(int sgi) const;
+
+        /// Get the group decomposition for a given component
+        Component get_component(const std::string &identifier, const std::string &value) const;
         
         /// Get the interaction parameters for given mgi-mgi pair
         InteractionParameters get_interaction_parameters(int mgi1, int mgi2) const;
