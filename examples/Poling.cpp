@@ -16,10 +16,13 @@ int main()
         UNIFAQParameterLibrary lib;
         lib.populate(b1.str(), b2.str(), b3.str());
         
-        UNIFAQMixture mix(lib);
-        std::vector<std::string> names(2, "n-Pentane"); names[1] = "Acetone"; 
+        UNIFAQ::UNIFAQMixture mix(lib);
+        std::vector<std::string> names(2, "Acetone"); names[1] = "n-Pentane"; 
         mix.set_components("name", names);
 
         mix.set_interaction_parameters();
+        std::vector<double> z(2,0.047); z[1] = 1-z[0];
+        mix.set_mole_fractions(z);
+        int ttt = 0;
     }
 }

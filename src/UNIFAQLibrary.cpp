@@ -48,7 +48,6 @@ namespace UNIFAQLibrary{
             if ((*itr).HasMember("userid")){
                 c.userid = (*itr)["userid"].GetString();
             }
-            components.push_back(c);
             rapidjson::Value &groups = (*itr)["groups"];
             for (rapidjson::Value::ValueIterator itrg = groups.Begin(); itrg != groups.End(); ++itrg)
             {
@@ -59,6 +58,7 @@ namespace UNIFAQLibrary{
                     c.groups.push_back(cg);
                 }
             }
+            components.push_back(c);
         }
     }
     void UNIFAQParameterLibrary::populate(std::string &group_data, std::string &interaction_data, std::string &decomp_data)
