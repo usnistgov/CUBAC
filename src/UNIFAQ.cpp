@@ -10,6 +10,8 @@ void UNIFAQ::UNIFAQMixture::set_interaction_parameters() {
     }
 }
 
+
+
 /// Set the mole fractions of the components in the mixtures (not the groups)
 void UNIFAQ::UNIFAQMixture::set_mole_fractions(const std::vector<double> &z) {
     this->mole_fractions = z;
@@ -36,7 +38,36 @@ void UNIFAQ::UNIFAQMixture::set_mole_fractions(const std::vector<double> &z) {
         summerzl += z[i] * l[i];
     }
     for (std::size_t i = 0; i < z.size(); ++i) {
-        ln_gamma_C[i] = log(phi[i] / z[i]) + 10.0 / 2.0*q[i] * log(theta[i] / phi[i]) + l[i] - phi[i] / z[i] * summerzl;
+        ln_gamma_C[i] = log(phi[i]/z[i]) + 10.0/2.0*q[i] * log(theta[i]/phi[i]) + l[i] - phi[i]/z[i]*summerzl;
+    }
+    
+    /// Calculate the parameter X for the pure components, which does not depend on temperature
+    for (std::size_t i = 0; i < z.size(); ++i){
+        int totalgroups = 0;
+        const UNIFAQLibrary::Component &c = components[i];
+        ComponentData cd;
+        double summerxq = 0;
+        for (std::size_t j = 0; j < c.groups.size(); ++j) {
+            const UNIFAQLibrary::ComponentGroup &cg = c.groups[j];
+            double x = static_cast<double>(cg.count);
+            double theta = static_cast<double>(cg.count*cg.group.Q_k);
+            cd.X.insert( std::pair<int,double>(cg.group.sgi, x) );
+            cd.theta.insert(std::pair<int, double>(cg.group.sgi, theta));
+            totalgroups += cg.count;
+            summerxq += x*cg.group.Q_k;
+        }
+        /// Now come back through and divide by the total # groups for this fluid
+        for (std::map<int, double>::iterator it = cd.X.begin(); it != cd.X.end(); ++it) {
+            it->second /= totalgroups;
+            printf("X^(%d)_{%d}: %g\n", i + 1, it->first, it->second);
+        }
+        /// Now come back through and divide by the sum(X*Q) for this fluid
+        for (std::map<int,double>::iterator it = cd.theta.begin(); it != cd.theta.end(); ++it){
+            it->second /= summerxq;
+            printf("theta^(%d)_{%d}: %g\n", i+1, it->first, it->second);
+        }
+        
+        pure_data.push_back(cd);
     }
 
     for (std::size_t i = 0; i < z.size(); ++i) {

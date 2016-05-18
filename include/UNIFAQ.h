@@ -4,6 +4,12 @@
 #include <map>
 
 #include "UNIFAQLibrary.h"
+
+/// Structure containing data for the pure fluid in the mixture
+struct ComponentData {
+    std::map<int, double> X, theta, lnGamma;
+};
+
 namespace UNIFAQ
 {
     class UNIFAQMixture
@@ -19,7 +25,10 @@ namespace UNIFAQ
         std::vector<UNIFAQLibrary::Group> unique_groups;
     
         std::vector<double> mole_fractions;
+
         std::vector<UNIFAQLibrary::Component> components;
+
+        std::vector<ComponentData> pure_data;
     
     public:
         UNIFAQMixture(const UNIFAQLibrary::UNIFAQParameterLibrary &library) : library(library) {};
