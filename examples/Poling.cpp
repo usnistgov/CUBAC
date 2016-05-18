@@ -23,6 +23,7 @@ int main()
         mix.set_interaction_parameters();
         std::vector<double> z(2,0.047); z[1] = 1-z[0];
         mix.set_mole_fractions(z);
+        mix.set_temperature(307);
         int ttt = 0;
     }
 }
