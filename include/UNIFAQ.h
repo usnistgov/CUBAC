@@ -8,6 +8,7 @@
 /// Structure containing data for the pure fluid in the mixture
 struct ComponentData {
     std::map<std::size_t, double> X, theta, lnGamma;
+    int group_count; ///< The total number of groups in the pure fluid
 };
 
 namespace UNIFAQ
@@ -16,6 +17,17 @@ namespace UNIFAQ
     {
     private:
         double m_T; ///< The temperature in K
+
+        std::vector<double> m_r,
+                            m_q,
+                            m_l,
+                            m_phi,
+                            m_theta,
+                            m_ln_Gamma_C;
+
+        std::map<std::size_t, double> m_Xg,  ///< Map from sgi to mole fraction of group in the mixture
+                                      m_thetag, ///< Map from sgi to theta for the group in the mixture
+                                      m_lnGammag; ///< Map from sgi to ln(Gamma) for the group in the mixture
 
         /// A const reference to the library of group and interaction parameters
         const UNIFAQLibrary::UNIFAQParameterLibrary &library;
@@ -52,9 +64,15 @@ namespace UNIFAQ
         /// Set the mole fractions of the components in the mixtures (not the groups)
         void set_temperature(const double T);
 
-        double Psi(std::size_t sgi1, std::size_t sgi2);
+        double Psi(std::size_t sgi1, std::size_t sgi2) const;
 
-        double theta_pure(std::size_t i, std::size_t sgi);
+        double theta_pure(std::size_t i, std::size_t sgi) const;
+
+        double activity_coefficient(std::size_t i) const;
+
+        double ln_gamma_R(std::size_t i) const;
+
+        std::size_t UNIFAQ::UNIFAQMixture::group_count(std::size_t i, std::size_t sgi) const;
 
         /// Add a component with the defined groups defined by (count, sgi) pairs
         void add_component(const UNIFAQLibrary::Component &comp);

@@ -24,6 +24,8 @@ int main()
         std::vector<double> z(2,0.047); z[1] = 1-z[0];
         mix.set_mole_fractions(z);
         mix.set_temperature(307);
-        int ttt = 0;
+        for (std::size_t i = 0; i < 2; ++i){
+            printf("gamma_{%d}: %g\n", i, mix.activity_coefficient(i));
+        }
     }
 }
