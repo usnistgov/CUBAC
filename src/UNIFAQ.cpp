@@ -12,6 +12,7 @@ void UNIFAQ::UNIFAQMixture::set_interaction_parameters() {
 
 /// Set the mole fractions of the components in the mixtures (not the groups)
 void UNIFAQ::UNIFAQMixture::set_mole_fractions(const std::vector<double> &z) {
+    pure_data.clear();
     this->mole_fractions = z;
     std::size_t N = z.size();
     std::vector<double> &r = m_r, &q = m_q, &l = m_l, &phi = m_phi, &theta = m_theta, &ln_Gamma_C = m_ln_Gamma_C;
@@ -60,17 +61,17 @@ void UNIFAQ::UNIFAQMixture::set_mole_fractions(const std::vector<double> &z) {
         /// Now come back through and divide by the total # groups for this fluid
         for (std::map<std::size_t, double>::iterator it = cd.X.begin(); it != cd.X.end(); ++it) {
             it->second /= totalgroups;
-            printf("X^(%d)_{%d}: %g\n", static_cast<int>(i + 1), static_cast<int>(it->first), it->second);
+            //printf("X^(%d)_{%d}: %g\n", static_cast<int>(i + 1), static_cast<int>(it->first), it->second);
         }
         /// Now come back through and divide by the sum(X*Q) for this fluid
         for (std::map<std::size_t,double>::iterator it = cd.theta.begin(); it != cd.theta.end(); ++it){
             it->second /= summerxq;
-            printf("theta^(%d)_{%d}: %g\n", static_cast<int>(i+1), static_cast<int>(it->first), it->second);
+            //printf("theta^(%d)_{%d}: %g\n", static_cast<int>(i+1), static_cast<int>(it->first), it->second);
         }
         pure_data.push_back(cd);
     }
     for (std::size_t i = 0; i < z.size(); ++i) {
-        printf("%g %g %g %g %g %g\n", l[i], phi[i], q[i], r[i], theta[i], ln_Gamma_C[i]);
+        //printf("%g %g %g %g %g %g\n", l[i], phi[i], q[i], r[i], theta[i], ln_Gamma_C[i]);
     }
 }
 
@@ -98,7 +99,6 @@ double UNIFAQ::UNIFAQMixture::theta_pure(std::size_t i, std::size_t sgi) const {
     return pure_data[i].theta.find(sgi)->second;
 }
 
-
 void UNIFAQ::UNIFAQMixture::set_temperature(const double T){
     this->m_T = T;
     for (std::size_t i = 0; i < this->mole_fractions.size(); ++i) {
@@ -123,12 +123,13 @@ void UNIFAQ::UNIFAQMixture::set_temperature(const double T){
             }
             ComponentData &cd = pure_data[i];
             cd.lnGamma.insert(std::pair<int, double>(sgik, Q*s));
-            printf("ln(Gamma)^(%d)_{%d}: %g\n", static_cast<int>(i + 1), sgik, Q*s);
+            //printf("ln(Gamma)^(%d)_{%d}: %g\n", static_cast<int>(i + 1), sgik, Q*s);
         }
     }
 
     std::map<std::size_t, double> &Xg = m_Xg, &thetag = m_thetag, &lnGammag = m_lnGammag;
-    
+    Xg.clear(); thetag.clear(); lnGammag.clear();
+
     // Iterate over the fluids
     double X_summer = 0; 
     for (std::size_t i = 0; i < this->mole_fractions.size(); ++i) {
@@ -148,7 +149,7 @@ void UNIFAQ::UNIFAQMixture::set_temperature(const double T){
     /// Now come back through and divide by the sum(z_i*count) for this fluid
     for (std::map<std::size_t, double>::iterator it = Xg.begin(); it != Xg.end(); ++it) {
         it->second /= X_summer;
-        printf("X_{%d}: %g\n", it->first, it->second);
+        //printf("X_{%d}: %g\n", it->first, it->second);
     }
     double theta_summer = 0;
     for (std::vector<UNIFAQLibrary::Group>::iterator it = unique_groups.begin(); it != unique_groups.end(); ++it) {
@@ -159,7 +160,7 @@ void UNIFAQ::UNIFAQMixture::set_temperature(const double T){
     /// Now come back through and divide by the sum(X*Q) for this fluid
     for (std::map<std::size_t, double>::iterator it = thetag.begin(); it != thetag.end(); ++it) {
         it->second /= theta_summer;
-        printf("theta_{%d}: %g\n", it->first, it->second);
+        //printf("theta_{%d}: %g\n", it->first, it->second);
     }
 
     for (std::vector<UNIFAQLibrary::Group>::iterator itk = unique_groups.begin(); itk != unique_groups.end(); ++itk) {
@@ -177,7 +178,7 @@ void UNIFAQ::UNIFAQMixture::set_temperature(const double T){
             s -= thetag.find(itm->sgi)->second*Psi(itk->sgi, itm->sgi)/sum3;
         }
         lnGammag.insert(std::pair<std::size_t, double>(itk->sgi, itk->Q_k*s));
-        printf("log(Gamma)_{%d}: %g\n", itk->sgi, itk->Q_k*s);
+        //printf("log(Gamma)_{%d}: %g\n", itk->sgi, itk->Q_k*s);
     }
 }
 double UNIFAQ::UNIFAQMixture::ln_gamma_R(std::size_t i) const{
@@ -190,7 +191,7 @@ double UNIFAQ::UNIFAQMixture::ln_gamma_R(std::size_t i) const{
             summer += count*(m_lnGammag.find(k)->second - pure_data[i].lnGamma.find(k)->second);
         }
     }
-    printf("log(gamma)_{%d}: %g\n", i+1, summer);
+    //printf("log(gamma)_{%d}: %g\n", i+1, summer);
     return summer;
 }
 double UNIFAQ::UNIFAQMixture::activity_coefficient(std::size_t i) const {
@@ -215,6 +216,7 @@ void UNIFAQ::UNIFAQMixture::add_component(const UNIFAQLibrary::Component &comp) 
 }
 
 void UNIFAQ::UNIFAQMixture::set_components(const std::string &identifier_type, std::vector<std::string> identifiers) {
+    components.clear();
     if (identifier_type == "name") {
         // Iterate over the provided names
         for (std::vector<std::string>::const_iterator it = identifiers.cbegin(); it != identifiers.cend(); ++it) {
