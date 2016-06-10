@@ -1,3 +1,9 @@
 [submodule "include/rapidjson"]
 	path = include/rapidjson
 	url = https://github.com/miloyip/rapidjson
+[submodule "externals/pybind11"]
+	path = externals/pybind11
+	url = https://github.com/pybind/pybind11.git
+[submodule "externals/CoolProp"]
+	path = externals/CoolProp
+	url = https://github.com/CoolProp/CoolProp
