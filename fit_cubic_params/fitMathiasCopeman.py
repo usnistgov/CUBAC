@@ -65,7 +65,7 @@ def minimize_deap(f, p0, kwargs):
                         toolbox, 
                         cxpb=0.5, # Crossover probability
                         mutpb=0.3, # Mutation probability
-                        ngen=50, 
+                        ngen=30, 
                         stats=stats, 
                         halloffame=hof, 
                         verbose=True)
@@ -75,11 +75,11 @@ def minimize_deap(f, p0, kwargs):
 
 if __name__=='__main__':
     import CoolProp.CoolProp as CP 
-    fluid = 'Ethane'
+    fluid = 'R125'
     Tc,Tt,acentric,pc = [CP.PropsSI(k,fluid) for k in ['Tcrit','T_triple','acentric','p_critical']]
     print(Tc, Tt, pc, acentric)
     pf = PureFluid([Tc],[pc],[acentric],8.3144598,True)
-    Texp = np.linspace(Tt, Tc-0.5, 100)
+    Texp = np.linspace(Tt, Tc-5, 500)
     pexp = CP.PropsSI('P','T',Texp,'Q',0,fluid)
 
     c = minimize_deap(objective, [0.0]*3, kwargs = dict(pf=pf, pexp=pexp, Texp=Texp))

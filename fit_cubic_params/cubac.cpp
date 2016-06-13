@@ -45,21 +45,19 @@ int main() {
     #include "crossplatform_shared_ptr.h"
     #include "AbstractState.h"
     using namespace CoolProp;
-    shared_ptr<AbstractState> c2(AbstractState::factory("HEOS", "propane")); 
+    shared_ptr<AbstractState> c2(AbstractState::factory("HEOS", "ethane")); 
     PureFluid pf({ c2->T_critical() }, { c2->p_critical() }, { c2->acentric_factor() }, c2->gas_constant(), true);
-    for (double T = 86; T < c2->T_critical(); T += 0.1) {
-        double rhoL = PropsSI("Dmolar", "T", T, "Q", 0, "REFPROP::PROPANE");
-        double rhoV = PropsSI("Dmolar", "T", T, "Q", 1, "REFPROP::PROPANE");
-        double pppp = PropsSI("P", "T", T, "Q", 1, "REFPROP::PROPANE");
+    for (double T = 300; T < c2->T_critical(); T += 0.1) {
+        std::string rpfluid = "REFPROP::ethane";
+        double rhoL = PropsSI("Dmolar", "T", T, "Q", 0, rpfluid);
+        double rhoV = PropsSI("Dmolar", "T", T, "Q", 1, rpfluid);
+        double pppp = PropsSI("P", "T", T, "Q", 1, rpfluid);
         c2->update(QT_INPUTS, 0, T);
         double pEth = c2->p(), pSRK; 
         try {
             pSRK = pf.saturation_pressure(T);
         }
         catch (...) {
-            pf.saturation_pressure(T);
-        }
-        if (std::abs(pSRK / pEth - 1) > 0.01) {
             pf.saturation_pressure(T);
         }
     }
