@@ -18,22 +18,19 @@ from deap import algorithms, base, creator, tools
 from deap.algorithms import eaSimple
 from operator import attrgetter
 
-def objective(c, pf, pexp, Texp, full_output = False):
+def objective(c, pf, pexp, Texp, pcorr, rhoLcorr):
     if c is not None:
         pf.set_c123(np.array(c).tolist())
-    pcorr = pexp.copy()
     for i,T in enumerate(Texp):
         try:
             pcorr[i] = pf.saturation_pressure(T)
-        except:
-            pcorr[i] = 1000*pexp[i]
+            rhoLcorr[i] = pf.rhomolar();
+        except BaseException as BE:
+            pcorr[i] = 1000*pexp[i];
+            rhoLcorr[i] = np.nan;
     err = (pcorr - pexp)/pexp
     ssq = np.sum(np.power(err, 2))
-    if full_output:
-        return dict(ssq = ssq,
-                    pcorr = pcorr)
-    else:
-        return (ssq,)
+    return (ssq,)
 
 def minimize_deap(f, p0, kwargs):
     # weight is -1 because we want to minimize the error
@@ -42,7 +39,7 @@ def minimize_deap(f, p0, kwargs):
     
     # See: http://deap.readthedocs.org/en/master/tutorials/basic/part1.html#a-funky-one    
     toolbox = base.Toolbox()
-    
+
     toolbox.register("attr", random.uniform, -2, 2)
     toolbox.register("individual", tools.initCycle, creator.Individual, (toolbox.attr,), n = len(p0))
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
@@ -60,12 +57,12 @@ def minimize_deap(f, p0, kwargs):
     stats = tools.Statistics(lambda ind: ind.fitness.values)
     stats.register("min", np.min)
     
-    pop = toolbox.population(n=1500)
+    pop = toolbox.population(n=500)
     pop, log = eaSimple(pop, 
                         toolbox, 
                         cxpb=0.5, # Crossover probability
                         mutpb=0.3, # Mutation probability
-                        ngen=30, 
+                        ngen=20, 
                         stats=stats, 
                         halloffame=hof, 
                         verbose=True)
@@ -73,20 +70,52 @@ def minimize_deap(f, p0, kwargs):
     print(best, best.fitness)
     return list(best)
 
-if __name__=='__main__':
-    import CoolProp.CoolProp as CP 
-    fluid = 'R125'
+
+def do_fluid(fluid):
+    import CoolProp.CoolProp as CP
     Tc,Tt,acentric,pc = [CP.PropsSI(k,fluid) for k in ['Tcrit','T_triple','acentric','p_critical']]
-    print(Tc, Tt, pc, acentric)
     pf = PureFluid([Tc],[pc],[acentric],8.3144598,True)
-    Texp = np.linspace(Tt, Tc-5, 500)
+    Texp = np.linspace(Tt, Tc-5, 200)
     pexp = CP.PropsSI('P','T',Texp,'Q',0,fluid)
+    rhoLexp = CP.PropsSI('Dmolar','T',Texp,'Q',0,fluid)
+    pcorr = pexp.copy()
+    rhoLcorr = pexp.copy()
 
-    c = minimize_deap(objective, [0.0]*3, kwargs = dict(pf=pf, pexp=pexp, Texp=Texp))
-    #c = [0.68638,-0.42475,0.72531]
+    # Actually do the fit and obtain the attractive parameters for EOS
+    a = minimize_deap(objective, [0.0]*3, kwargs = dict(pf=pf, 
+                                                        pexp=pexp, 
+                                                        pcorr=pcorr, 
+                                                        rhoLcorr=rhoLcorr, 
+                                                        Texp=Texp))
 
-    pp = objective(None, pf, pexp, Texp, full_output = True)['pcorr']
-    plt.plot(Texp, pexp)
-    plt.plot(Texp, pp)
-    plt.yscale('log')
-    plt.show()
+    # Calculate the values based on the obtained coefficients
+    objective(a, pf, pexp, Texp, pcorr, rhoLcorr)
+
+    # Pressure deviation plot
+    plt.plot(Texp, (pexp/pcorr-1)*100)
+    plt.xlabel('T')
+    plt.ylabel(r'$(p_{\rm exp}/p_{\rm pred}-1)\times 100$ (%)')
+    plt.savefig(fluid+'_pdev.png')
+    plt.close()
+
+    # And now we solve for the volume translation term c by evaluating the difference between 
+    # the actual saturated liquid density (from EOS) and the saturated liquid density 
+    # predicted by cubic
+    pf.saturation_pressure(0.7*Tc)
+    c = 1/CP.PropsSI('Dmolar','T',0.7*Tc,'Q',0,fluid) - 1/pf.rhomolar();
+    rhoLvt = 1/(1/rhoLcorr+c); # corrected liquid density after volume translation
+
+    # Volume deviation
+    plt.plot(Texp, (rhoLexp/rhoLcorr-1)*100, label = 'predicted')
+    plt.plot(Texp, (rhoLexp/rhoLvt-1)*100, label = 'volume-translated')
+    plt.axvline(0.7*Tc, dashes=[2,2])
+    plt.xlabel('T')
+    plt.ylabel(r'$(\rho_{\rm exp}/\rho_{\rm pred}-1)\times 100$ (%)')
+    plt.legend(loc='best')
+    plt.savefig(fluid+'_rhodev.png')
+    plt.close()
+
+if __name__=='__main__':
+    do_fluid('ARGON')
+    do_fluid('R125')
+    do_fluid('WATER')

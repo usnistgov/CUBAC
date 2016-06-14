@@ -21,6 +21,9 @@ public:
         update(CoolProp::PQ_INPUTS, p, 0);
         return T();
     }
+    double rhomolar() {
+        return AbstractState::rhomolar();
+    }
 };
 
 #ifdef PYBIND11
@@ -36,6 +39,7 @@ PYBIND11_PLUGIN(PureFluid) {
         .def("set_c123", &PureFluid::set_c123)
         .def("saturation_pressure", &PureFluid::saturation_pressure)
         .def("saturation_temp", &PureFluid::saturation_temp)
+        .def("rhomolar", &PureFluid::rhomolar)
         ;
     return m.ptr();
 }
@@ -56,6 +60,7 @@ int main() {
         double pEth = c2->p(), pSRK; 
         try {
             pSRK = pf.saturation_pressure(T);
+            double rhoL = pf.rhomolar();
         }
         catch (...) {
             pf.saturation_pressure(T);
