@@ -24,6 +24,17 @@ public:
     double rhomolar() {
         return AbstractState::rhomolar();
     }
+    double am(double T) { 
+        double tau = get_cubic()->T_r/T;
+        std::vector<double> x(1, 1.0);
+        return get_cubic()->am_term(tau, x, 0);
+    }
+    double bm() { 
+        std::vector<double> x(1, 1.0); 
+        return get_cubic()->bm_term(x); 
+    }
+    double Delta_1() { return get_cubic()->get_Delta_1(); }
+    double Delta_2() { return get_cubic()->get_Delta_2(); }
 };
 
 #ifdef PYBIND11
@@ -40,6 +51,10 @@ PYBIND11_PLUGIN(PureFluid) {
         .def("saturation_pressure", &PureFluid::saturation_pressure)
         .def("saturation_temp", &PureFluid::saturation_temp)
         .def("rhomolar", &PureFluid::rhomolar)
+        .def("am", &PureFluid::am)
+        .def("bm", &PureFluid::bm)
+        .def("Delta_1", &PureFluid::Delta_1)
+        .def("Delta_2", &PureFluid::Delta_2)
         ;
     return m.ptr();
 }
@@ -57,7 +72,9 @@ int main() {
         double rhoV = PropsSI("Dmolar", "T", T, "Q", 1, rpfluid);
         double pppp = PropsSI("P", "T", T, "Q", 1, rpfluid);
         c2->update(QT_INPUTS, 0, T);
-        double pEth = c2->p(), pSRK; 
+        
+        double pEth = c2->p(); 
+        double pSRK = pf.saturation_pressure(T);
         try {
             pSRK = pf.saturation_pressure(T);
             double rhoL = pf.rhomolar();

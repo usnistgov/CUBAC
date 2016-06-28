@@ -2,6 +2,7 @@ from __future__ import print_function
 
 import os, sys, subprocess
 import numpy as np, matplotlib.pyplot as plt, scipy.optimize
+import CoolProp.CoolProp as CP
 
 try:
     from PureFluid import PureFluid
@@ -30,7 +31,7 @@ def objective(c, pf, pexp, Texp, pcorr, rhoLcorr):
             rhoLcorr[i] = np.nan;
     err = (pcorr - pexp)/pexp
     ssq = np.sum(np.power(err, 2))
-    return (ssq,)
+    return ssq
 
 def minimize_deap(f, p0, kwargs):
     # weight is -1 because we want to minimize the error
@@ -43,7 +44,11 @@ def minimize_deap(f, p0, kwargs):
     toolbox.register("attr", random.uniform, -2, 2)
     toolbox.register("individual", tools.initCycle, creator.Individual, (toolbox.attr,), n = len(p0))
     toolbox.register("population", tools.initRepeat, list, toolbox.individual)
-    toolbox.register("evaluate", f, **kwargs)
+
+    def myfunc(c, **kwarwgs):
+        """ Wrap the objective function so that it returns a tuple for compatibility with deap """
+        return (f(c, **kwargs), )
+    toolbox.register("evaluate", myfunc, **kwargs)
     if 'DeltaPenality' in dir(tools):
         toolbox.decorate("evaluate", tools.DeltaPenality(feasible, 100000))
     # If two individuals mate, interpolate between them, allow for a bit of extrapolation
@@ -70,10 +75,10 @@ def minimize_deap(f, p0, kwargs):
     print(best, best.fitness)
     return list(best)
 
-
 def do_fluid(fluid):
-    import CoolProp.CoolProp as CP
+    
     Tc,Tt,acentric,pc = [CP.PropsSI(k,fluid) for k in ['Tcrit','T_triple','acentric','p_critical']]
+    print(Tt, Tc-5)
     pf = PureFluid([Tc],[pc],[acentric],8.3144598,True)
     Texp = np.linspace(Tt, Tc-5, 200)
     pexp = CP.PropsSI('P','T',Texp,'Q',0,fluid)
@@ -81,7 +86,7 @@ def do_fluid(fluid):
     pcorr = pexp.copy()
     rhoLcorr = pexp.copy()
 
-    # Actually do the fit and obtain the attractive parameters for EOS
+    # # Actually do the fit and obtain the attractive parameters for EOS
     a = minimize_deap(objective, [0.0]*3, kwargs = dict(pf=pf, 
                                                         pexp=pexp, 
                                                         pcorr=pcorr, 
