@@ -44,6 +44,9 @@ namespace UNIFAQLibrary{
             c.inchikey = (*itr)["inchikey"].GetString();
             c.registry_number = (*itr)["registry_number"].GetString();
             c.name = (*itr)["name"].GetString();
+            c.Tc = (*itr)["Tc"].GetDouble();
+            c.pc = (*itr)["pc"].GetDouble();
+            c.acentric = (*itr)["acentric"].GetDouble();
             // userid is an optional user identifier
             if ((*itr).HasMember("userid")){
                 c.userid = (*itr)["userid"].GetString();

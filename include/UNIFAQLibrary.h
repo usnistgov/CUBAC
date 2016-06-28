@@ -54,6 +54,9 @@ namespace UNIFAQLibrary{
                     inchikey,        ///< The InChI key for the component
                     registry_number, ///< The registry number for the component in xxxxxxxxxx-xx-x format
                     userid;          ///< A user-specified string identifier
+        double Tc,                   ///< The critical temperature in K
+               pc,                   ///< The critical pressure in Pa
+               acentric;             ///< The acentric factor
         std::vector<ComponentGroup> groups;
     };
 

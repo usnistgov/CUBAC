@@ -10,7 +10,7 @@ const double R = 8.3144598;
 
 int main()
 {
-    std::ifstream t1("../dev/Horstmann_group_data.json"), t2("../dev/Horstmann_interaction_parameters.json"), t3("../dev/Kang_decomps.json");
+    std::ifstream t1("../dev/Horstmann_group_data.json"), t2("../dev/Horstmann_interaction_parameters.json"), t3("../dev/group_decompositions.json");
     std::stringstream b1, b2, b3;
     b1 << t1.rdbuf(); b2 << t2.rdbuf(); b3 << t3.rdbuf();
     double rrrr = 0;

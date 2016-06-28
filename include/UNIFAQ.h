@@ -60,9 +60,15 @@ namespace UNIFAQ
 
         /// Set the mole fractions of the components in the mixtures (not the groups)
         void set_mole_fractions(const std::vector<double> &z);
+        
+        /// Get the mole fractions of the components in the mixtures (not the groups)
+        const std::vector<double> & get_mole_fractions() { return mole_fractions; }
 
         /// Set the mole fractions of the components in the mixtures (not the groups)
         void set_temperature(const double T);
+
+        /// Get the temperature
+        double get_temperature() const { return m_T; }
 
         double Psi(std::size_t sgi1, std::size_t sgi2) const;
 
@@ -78,6 +84,8 @@ namespace UNIFAQ
         void add_component(const UNIFAQLibrary::Component &comp);
     
         void set_components(const std::string &identifier_type, std::vector<std::string> identifiers);
+        
+        const std::vector<UNIFAQLibrary::Component> & get_components() { return components; };
     };
 
 } /* namespace UNIFAQ */

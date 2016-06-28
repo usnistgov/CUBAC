@@ -1,0 +1,260 @@
+[
+ {
+  "inchikey": "CSCPPACGZOOCGX-UHFFFAOYAF", 
+  "name": "Acetone", 
+  "userid": "", 
+  "acentric": 0.3071, 
+  "pc": 4700000.0, 
+  "groups": [
+   {
+    "count": 1, 
+    "sgi": 1
+   }, 
+   {
+    "count": 1, 
+    "sgi": 18
+   }
+  ], 
+  "registry_number": "67-64-1", 
+  "Tc": 508.1
+ }, 
+ {
+  "inchikey": "OTMSDBZUPAUEDD-UHFFFAOYAK", 
+  "name": "Ethane", 
+  "userid": "", 
+  "acentric": 0.099, 
+  "pc": 4872200.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }
+  ], 
+  "registry_number": "74-84-0", 
+  "Tc": 305.322
+ }, 
+ {
+  "inchikey": "LFQSCWFLJHTTHZ-UHFFFAOYAB", 
+  "name": "Ethanol", 
+  "userid": "", 
+  "acentric": 0.644, 
+  "pc": 6268000.0, 
+  "groups": [
+   {
+    "count": 1, 
+    "sgi": 1
+   }, 
+   {
+    "count": 1, 
+    "sgi": 2
+   }, 
+   {
+    "count": 1, 
+    "sgi": 14
+   }
+  ], 
+  "registry_number": "64-17-5", 
+  "Tc": 514.71
+ }, 
+ {
+  "inchikey": "OKKJLVBELUTLKV-UHFFFAOYAX", 
+  "name": "Methanol", 
+  "userid": "", 
+  "acentric": 0.5720322, 
+  "pc": 8215850.0, 
+  "groups": [
+   {
+    "count": 1, 
+    "sgi": 15
+   }
+  ], 
+  "registry_number": "67-56-1", 
+  "Tc": 512.5
+ }, 
+ {
+  "inchikey": "IJDNQMDRQITEOD-UHFFFAOYAE", 
+  "name": "n-Butane", 
+  "userid": "", 
+  "acentric": 0.200810094644, 
+  "pc": 3796000.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 2, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "106-97-8", 
+  "Tc": 425.125
+ }, 
+ {
+  "inchikey": "DIOQZVSQGTUSAI-UHFFFAOYAR", 
+  "name": "n-Decane", 
+  "userid": "", 
+  "acentric": 0.4884, 
+  "pc": 2103000.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 8, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "124-18-5", 
+  "Tc": 617.7
+ }, 
+ {
+  "inchikey": "SNRUBQQJIBEYMU-UHFFFAOYAS", 
+  "name": "n-Dodecane", 
+  "userid": "", 
+  "acentric": 0.574182221240689, 
+  "pc": 1817000.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 10, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "112-40-3", 
+  "Tc": 658.1
+ }, 
+ {
+  "inchikey": "IMNFDUFMRHMDMM-UHFFFAOYAU", 
+  "name": "n-Heptane", 
+  "userid": "", 
+  "acentric": 0.349, 
+  "pc": 2736000.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 5, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "142-82-5", 
+  "Tc": 540.13
+ }, 
+ {
+  "inchikey": "VLKZOEOYAKHREP-UHFFFAOYAD", 
+  "name": "n-Hexane", 
+  "userid": "", 
+  "acentric": 0.299, 
+  "pc": 3034000.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 4, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "110-54-3", 
+  "Tc": 507.82
+ }, 
+ {
+  "inchikey": "BKIMMITUMNQMOS-UHFFFAOYAS", 
+  "name": "n-Nonane", 
+  "userid": "", 
+  "acentric": 0.4433, 
+  "pc": 2281000.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 7, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "111-84-2", 
+  "Tc": 594.5500000000001
+ }, 
+ {
+  "inchikey": "OFBQJSOFQDEBGM-UHFFFAOYAN", 
+  "name": "n-Pentane", 
+  "userid": "", 
+  "acentric": 0.251, 
+  "pc": 3370000.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 3, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "109-66-0", 
+  "Tc": 469.7000000000001
+ }, 
+ {
+  "inchikey": "ATUOYWHBWRKTHZ-UHFFFAOYAU", 
+  "name": "n-Propane", 
+  "userid": "", 
+  "acentric": 0.1521, 
+  "pc": 4251200.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 1, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "74-98-6", 
+  "Tc": 369.89
+ }, 
+ {
+  "inchikey": "RSJKGSCJYJTIGS-UHFFFAOYAC", 
+  "name": "n-Undecane", 
+  "userid": "", 
+  "acentric": 0.5390371013718567, 
+  "pc": 1990400.0, 
+  "groups": [
+   {
+    "count": 2, 
+    "sgi": 1
+   }, 
+   {
+    "count": 9, 
+    "sgi": 2
+   }
+  ], 
+  "registry_number": "1120-21-4", 
+  "Tc": 638.8000000000001
+ },
+ {
+  "inchikey": "XLYOFNOQVPJJNP-UHFFFAOYAF", 
+  "name": "Water", 
+  "userid": "", 
+  "acentric": 0.3442920843, 
+  "pc": 22064000.0, 
+  "groups": [
+   {
+    "count": 1, 
+    "sgi": 16
+   }
+  ], 
+  "registry_number": "7732-18-5", 
+  "Tc": 647.096
+ }
+]
