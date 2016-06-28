@@ -39,14 +39,12 @@ public:
         }
         return summer;
     }
-    /// The co-volume for the i-th component
+    /// The co-volume for the i-th pure component
     double b_ii(std::size_t i){
-        const std::vector<UNIFAQLibrary::Component> pure_data = unifaq.get_components();
         return 0.0778*R*Tc[i]/pc[i];
     }
     /// The attractive parameter for the i-th pure component
     double a_ii(std::size_t i){
-        const std::vector<UNIFAQLibrary::Component> pure_data = unifaq.get_components();
         return 0.45724*pow(R*Tc[i], 2)/pc[i]*a_alpha(unifaq.get_temperature(), i);
     }
     double bm(){
