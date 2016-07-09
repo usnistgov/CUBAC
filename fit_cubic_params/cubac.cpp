@@ -9,9 +9,13 @@ public:
               bool generate_SatL_and_SatV = true)
         : PengRobinsonBackend(Tc,pc,acentric,R_u, generate_SatL_and_SatV)
     { };
-    void set_c123(const std::vector<double> &c123){
+    void set_c_MC(const std::vector<double> &c123){
         // set constants c1, c2, c3 for Mathias-Copeman
         AbstractCubicBackend::set_C_MC(c123[0], c123[1], c123[2]);
+    }
+    void set_c_Twu(const std::vector<double> &c123){
+        // set constants c1, c2, c3 for Twu
+        AbstractCubicBackend::set_C_Twu(c123[0], c123[1], c123[2]);
     }
     double saturation_pressure(double T){
         update(CoolProp::QT_INPUTS, 0, T);
@@ -47,7 +51,8 @@ PYBIND11_PLUGIN(PureFluid) {
     py::module m("PureFluid", "Pure fluid plugin");
     py::class_<PureFluid>(m, "PureFluid")
         .def(py::init<const std::vector<double> &, const std::vector<double> &, const std::vector<double> &, double, bool>())
-        .def("set_c123", &PureFluid::set_c123)
+        .def("set_c_MC", &PureFluid::set_c_MC)
+        .def("set_c_Twu", &PureFluid::set_c_Twu)
         .def("saturation_pressure", &PureFluid::saturation_pressure)
         .def("saturation_temp", &PureFluid::saturation_temp)
         .def("rhomolar", &PureFluid::rhomolar)
