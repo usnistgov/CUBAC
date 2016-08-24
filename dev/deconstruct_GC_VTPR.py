@@ -42,7 +42,7 @@ def fluids(ofname):
     df = pandas.read_excel('GC-VTPR.xlsx', sheetname='Components')
     df = df.fillna(0.0)
     entries = []
-    for fluid in CoolProp.__fluids__ + ['1-Propanol']:
+    for fluid in CoolProp.__fluids__ :
         if fluid in CoolProp.__fluids__:
             CAS = CP.get_fluid_param_string(fluid, "CAS")
         else:
