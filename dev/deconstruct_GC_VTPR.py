@@ -1,4 +1,4 @@
-import CoolProp, pandas, json, os
+import CoolProp, pandas, json, os, numpy as np
 CP = CoolProp.CoolProp
 
 def groups(ofname):
@@ -40,26 +40,18 @@ def interaction_parameters(ofname):
 
 def fluids(ofname):
     df = pandas.read_excel('GC-VTPR.xlsx', sheetname='Components')
+
     df = df.fillna(0.0)
     entries = []
-    for fluid in CoolProp.__fluids__ :
-        if fluid in CoolProp.__fluids__:
-            CAS = CP.get_fluid_param_string(fluid, "CAS")
-        else:
-            CAS = df.loc[df['english name'] == fluid, 'CAS-nr.'].iloc[0]
-        
-        if CAS in df['CAS-nr.'].tolist():
-            pass
-        elif '.ppf' in CAS.lower():
-            print "\t\t\t\tSkipping", fluid
-            continue
-        else:
-            print "Unable to match", fluid, CAS
-            continue
+    for _index, row in df.iterrows():        
 
-        group_string = df.loc[df['CAS-nr.'] == CAS,'increments [count * sub group number]'].iloc[0]
+        group_string = row['increments [count * sub group number]']
         count_sgi = group_string.split(';')
         count_sgi = [l.split('*') for l in count_sgi]
+
+        alpha = None
+        if not np.isnan(row['L']):
+            alpha = {'type': 'Twu', 'c': [row['L'],row['M'],row['N']], "BibTeX": "Guennec-FPE-2016-tcPR"}
 
         groups = []
         for count, sgi in count_sgi:
@@ -67,14 +59,17 @@ def fluids(ofname):
 
         entry = {
             "inchikey": "?????????????", 
-            "name": fluid, 
+            "name": row['english name'],
             "userid": "", 
-            "acentric": CP.PropsSI(fluid,'acentric'), 
-            "pc": CP.PropsSI(fluid,'pcrit'), 
+            "acentric": row['acentric'], 
+            "pc": row['p_crit (Pa)'], 
             "groups": groups, 
-            "registry_number": CAS, 
-            "Tc": CP.PropsSI(fluid,'Tcrit')
+            "registry_number": row['CAS-nr.'], 
+            "Tc": row['T_crit (K)'],
+            "BibTeX": "Guennec-FPE-2016-tcPR"
         }
+        if alpha is not None:
+            entry['alpha'] = alpha
         entries.append(entry)
 
     with open(ofname, 'w') as fp:
