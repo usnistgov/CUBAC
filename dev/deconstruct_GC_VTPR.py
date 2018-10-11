@@ -61,6 +61,7 @@ def fluids(ofname):
             "inchikey": "?????????????", 
             "name": row['english name'],
             "userid": "", 
+            "molemass": 0.02, # XXXXXXXXXXXXX
             "acentric": row['acentric'], 
             "pc": row['p_crit (Pa)'], 
             "groups": groups, 
